@@ -3,7 +3,7 @@
     <div v-for="row in 8" :key="row" class="row">
       <div v-for="col in 8" :key="col">
         <Cell
-          @drop="onDrop($event, row, col)"
+          @click="onDrop($event, row, col)"
           @onDraggedElement="handleDrag"
           :computed-class="getCellClass(row, col)"
           :row="row"
@@ -58,14 +58,18 @@ export default {
         ) {
           targetElement.col = col;
           targetElement.row = row;
+          this.draggedElement = {};
         }
       }
     },
     getCellClass(row, col) {
       const isWhite = (row + col) % 2 === 0;
-      return isWhite ? "cell-white" : "cell-black";
+      let computedClass = isWhite ? "cell-white" : "cell-black";
+      const isSelected =
+        row == this.draggedElement.row && this.draggedElement.col == col;
+      computedClass += isSelected ? " selected" : "";
+      return computedClass;
     },
-
     checkFreePlace(row, col) {
       return !this.elements.find((el) => el.row == row && el.col == col);
     },

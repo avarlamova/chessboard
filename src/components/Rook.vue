@@ -1,5 +1,5 @@
 <template>
-  <div class="rook" draggable="true" @dragstart="onDragStart(id)">
+  <div class="rook" draggable="true" @click="onDragStart(id)">
     <CastleImage />
   </div>
 </template>

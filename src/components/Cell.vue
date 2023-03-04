@@ -76,7 +76,9 @@ export default {
 .cell-black {
   background-color: #b58863;
 }
-
+.selected {
+  background-color: #4863a0;
+}
 /* 390х844 */
 @media (min-width: 390px) {
   .cell {
