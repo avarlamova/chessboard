@@ -1,5 +1,5 @@
 <template>
-  <div draggable="true" @dragstart="onDragStart(id)">
+  <div class="rook" draggable="true" @dragstart="onDragStart(id)">
     <CastleImage />
   </div>
 </template>
@@ -67,7 +67,9 @@ export default {
 /* div {
   background-color: v-bind(color);
 } */
-
+.rook {
+  transform: translate(0, 0);
+}
 svg {
   color: v-bind(color);
 }

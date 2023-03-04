@@ -1,21 +1,11 @@
-<!--  -->
-
 <template>
   <div class="cell" :class="computedClass">
     <div draggable="true">
-      <Rook
+      <component
+        :is="elementType"
+        :color="hasElement.color"
+        :id="hasElement.id"
         @onDragged="onDragged"
-        class="rook"
-        v-if="hasWhiteRook"
-        :color="`white`"
-        :id="1"
-      />
-      <Rook
-        @onDragged="onDragged"
-        class="rook"
-        v-if="hasBlackRook"
-        :color="`black`"
-        :id="2"
       />
     </div>
   </div>
@@ -45,26 +35,24 @@ export default {
       required: true,
       type: String,
     },
-    whiteRookPosition: {},
-    blackRookPosition: {},
+    hasElement: {
+      required: true,
+    },
   },
   computed: {
-    hasWhiteRook() {
-      if (
-        this.whiteRookPosition.col === this.col &&
-        this.whiteRookPosition.row === this.row
-      ) {
-        return true;
+    elementType() {
+      if (this.hasElement) {
+        const { type } = this.hasElement;
+        //предположим, что типов фигур будет много, поэтому использован switch
+        switch (type) {
+          case "rook":
+            return Rook;
+
+          default:
+            break;
+        }
       }
-      return false;
-    },
-    hasBlackRook() {
-      if (
-        this.blackRookPosition.col === this.col &&
-        this.blackRookPosition.row === this.row
-      ) {
-        return true;
-      }
+
       return false;
     },
   },
@@ -79,9 +67,6 @@ export default {
 <style scoped>
 .cell-white {
   background-color: #f0d9b5;
-}
-.rook {
-  transform: translate(0, 0);
 }
 
 .cell {

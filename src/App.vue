@@ -1,5 +1,4 @@
 <template>
-  <!-- <Board @dragover="allowDrop" @drop="onDrop" /> -->
   <div @dragover="allowDrop" @drop="onDrop">
     <div v-for="row in 8" :key="row" class="row">
       <div v-for="col in 8" :key="col">
@@ -9,8 +8,7 @@
           :computed-class="getCellClass(row, col)"
           :row="row"
           :col="col"
-          :white-rook-position="whiteRookPosition"
-          :black-rook-position="blackRookPosition"
+          :has-element="hasElement(row, col)"
         />
       </div>
     </div>
@@ -18,72 +16,49 @@
 </template>
 
 <script>
-// import Board from "./components/Board.vue";
-// import Rook from "./components/Rook.vue";
 import Cell from "./components/Cell.vue";
 
-// import Castle from "./components/Castle.vue";
 export default {
   name: "App",
   components: {
-    // Board,
-    // Rook,
     Cell,
   },
   data() {
     return {
-      rooks: [
-        { id: "1", color: "white", col: 1, row: 1 },
-        { id: "2", color: "black" },
+      elements: [
+        { id: "1", color: "white", col: 1, row: 1, type: "rook" },
+        { id: "2", color: "black", col: 1, row: 8, type: "rook" },
       ],
       draggedElement: {},
-      whiteRookPosition: {
-        col: 1,
-        row: 1,
-      },
-      blackRookPosition: {
-        col: 1,
-        row: 8,
-      },
     };
   },
   methods: {
     handleDrag(id) {
-      const draggedRook = this.rooks.find((el) => el.id == id);
-      this.draggedElement = draggedRook;
+      const draggedElement = this.elements.find((el) => el.id == id);
+      this.draggedElement = draggedElement;
     },
     allowDrop(ev) {
       ev.preventDefault();
     },
+    hasElement(row, col) {
+      const targetElement = this.elements.find(
+        (el) => el.row == row && el.col == col
+      );
+      if (targetElement) {
+        return targetElement;
+      } else return false;
+    },
     onDrop(event, row, col) {
       if (row && col) {
-        //white rook
+        const targetElement = this.elements.find(
+          (el) => el.id === this.draggedElement.id
+        );
         if (
-          this.draggedElement.id == 1 &&
-          // movement rules
-          (this.whiteRookPosition.row == row ||
-            this.whiteRookPosition.col == col) &&
-          //cell is not occupied
-          this.checkFreePlace(row, col, 2)
+          this.checkFreePlace(row, col) &&
+          this.checkMovementRules(targetElement, row, col)
         ) {
-          this.whiteRookPosition = {
-            col: col,
-            row: row,
-          };
-        }
-        //black rook
-        if (
-          this.draggedElement.id == 2 &&
-          // movement rules
-          (this.blackRookPosition.row == row ||
-            this.blackRookPosition.col == col) &&
-          //cell is not occupied
-          this.checkFreePlace(row, col, 1)
-        ) {
-          this.blackRookPosition = {
-            col: col,
-            row: row,
-          };
+          targetElement.col = col;
+          targetElement.row = row;
         }
       }
     },
@@ -91,11 +66,20 @@ export default {
       const isWhite = (row + col) % 2 === 0;
       return isWhite ? "cell-white" : "cell-black";
     },
-    checkFreePlace(row, col, rookId) {
-      const otherRook =
-        rookId == 2 ? this.blackRookPosition : this.whiteRookPosition;
-      const newPosition = { col, row };
-      return JSON.stringify(otherRook) !== JSON.stringify(newPosition);
+
+    checkFreePlace(row, col) {
+      return !this.elements.find((el) => el.row == row && el.col == col);
+    },
+    checkMovementRules(element, row, col) {
+      switch (element.type) {
+        case "rook":
+          return element.col == col || element.row == row;
+
+        // в остальные case можно положить другие типы шахматных фигур, в проверку - соответствующие правила
+
+        default:
+          break;
+      }
     },
   },
 };
