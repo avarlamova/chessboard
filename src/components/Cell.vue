@@ -70,10 +70,32 @@ export default {
 }
 
 .cell {
-  width: 80px;
-  height: 80px;
+  width: 20px;
+  height: 20px;
 }
 .cell-black {
   background-color: #b58863;
+}
+
+/* 390х844 */
+@media (min-width: 390px) {
+  .cell {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (min-width: 800px) {
+  .cell {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .cell {
+    width: 100px;
+    height: 100px;
+  }
 }
 </style>

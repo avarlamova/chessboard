@@ -1,5 +1,5 @@
 <template>
-  <div @dragover="allowDrop" @drop="onDrop">
+  <div class="board" @dragover="allowDrop" @drop="onDrop">
     <div v-for="row in 8" :key="row" class="row">
       <div v-for="col in 8" :key="col">
         <Cell
@@ -17,7 +17,6 @@
 
 <script>
 import Cell from "./components/Cell.vue";
-
 export default {
   name: "App",
   components: {
@@ -86,37 +85,22 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin: 0 auto;
-}
-.chessboard {
+.board {
   display: flex;
   flex-wrap: wrap;
-  width: 640px;
-  height: 640px;
+  margin: 6rem auto;
 }
 
 .row {
   display: flex;
   flex-wrap: wrap;
-  width: 100%;
-  height: 80px;
 }
 
-.cell {
+/* .cell {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80px;
-  height: 80px;
-  font-size: 30px;
-  font-weight: bold;
-}
+} */
 .cell-white {
   background-color: #f0d9b5;
 }
@@ -125,15 +109,25 @@ export default {
   background-color: #b58863;
 }
 
-.cell {
-  background-color: #b58863;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 80px;
-  height: 80px;
-  font-size: 30px;
-  font-weight: bold;
+/* 390х844 */
+@media (min-width: 390px) {
+  .board {
+    width: 320px;
+    height: 320px;
+  }
+}
+/* 800х600 */
+@media (min-width: 800px) {
+  .board {
+    width: 640px;
+    height: 640px;
+  }
+}
+/* 1920х1080 */
+@media (min-width: 1920px) {
+  .board {
+    width: 800px;
+    height: 800px;
+  }
 }
 </style>
