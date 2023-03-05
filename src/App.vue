@@ -3,7 +3,7 @@
     <div v-for="row in 8" :key="row" class="row">
       <div v-for="col in 8" :key="col">
         <Cell
-          @click="onDrop($event, row, col)"
+          @click="onDrop(row, col)"
           @onDraggedElement="handleDrag"
           :computed-class="getCellClass(row, col)"
           :row="row"
@@ -47,18 +47,22 @@ export default {
         return targetElement;
       } else return false;
     },
-    onDrop(event, row, col) {
+    onDrop(row, col) {
       if (row && col) {
         const targetElement = this.elements.find(
           (el) => el.id === this.draggedElement.id
         );
-        if (
-          this.checkFreePlace(row, col) &&
-          this.checkMovementRules(targetElement, row, col)
-        ) {
-          targetElement.col = col;
-          targetElement.row = row;
-          this.draggedElement = {};
+        if (targetElement) {
+          if (!this.checkMovementRules(targetElement, row, col)) {
+            this.draggedElement = {};
+          } else if (
+            this.checkFreePlace(row, col) &&
+            this.checkMovementRules(targetElement, row, col)
+          ) {
+            targetElement.col = col;
+            targetElement.row = row;
+            this.draggedElement = {};
+          }
         }
       }
     },
