@@ -1,5 +1,5 @@
 <template>
-  <div class="rook" draggable="true" @click="onDragStart(id)">
+  <div class="rook" @click="handleClick(id)">
     <CastleImage />
   </div>
 </template>
@@ -27,8 +27,8 @@ export default {
   },
 
   methods: {
-    onDragStart(id) {
-      this.$emit("onDragged", id);
+    handleClick(id) {
+      this.$emit("onElementClick", id);
     },
   },
 };

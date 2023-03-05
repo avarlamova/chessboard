@@ -1,10 +1,10 @@
 <template>
-  <div class="board" @dragover="allowDrop" @drop="onDrop">
+  <div class="board">
     <div v-for="row in 8" :key="row" class="row">
       <div v-for="col in 8" :key="col">
         <Cell
-          @click="onDrop(row, col)"
-          @onDraggedElement="handleDrag"
+          @click="onElementMove(row, col)"
+          @onElementClick="handleClick"
           :computed-class="getCellClass(row, col)"
           :row="row"
           :col="col"
@@ -32,12 +32,14 @@ export default {
     };
   },
   methods: {
-    handleDrag(id) {
-      const draggedElement = this.elements.find((el) => el.id == id);
-      this.draggedElement = draggedElement;
-    },
-    allowDrop(ev) {
-      ev.preventDefault();
+    handleClick(id) {
+      //нажат уже выбранный элемент
+      if (id == this.draggedElement.id) {
+        this.draggedElement = {};
+      } else {
+        const draggedElement = this.elements.find((el) => el.id == id);
+        this.draggedElement = draggedElement;
+      }
     },
     hasElement(row, col) {
       const targetElement = this.elements.find(
@@ -47,7 +49,7 @@ export default {
         return targetElement;
       } else return false;
     },
-    onDrop(row, col) {
+    onElementMove(row, col) {
       if (row && col) {
         const targetElement = this.elements.find(
           (el) => el.id === this.draggedElement.id

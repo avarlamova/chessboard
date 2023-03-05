@@ -5,7 +5,7 @@
         :is="elementType"
         :color="hasElement.color"
         :id="hasElement.id"
-        @onDragged="onDragged"
+        @onElementClick="onClickedElement"
       />
     </div>
   </div>
@@ -57,8 +57,8 @@ export default {
     },
   },
   methods: {
-    onDragged(id) {
-      this.$emit("onDraggedElement", id);
+    onClickedElement(id) {
+      this.$emit("onElementClick", id);
     },
   },
 };
